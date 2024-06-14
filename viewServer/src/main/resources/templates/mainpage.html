@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+</head>
+<body>
+<h1>main Page</h1>
+<hr>
+<p id="username" th:text="${session.username}"></p>
+<p id="password" th:text="${session.password}"></p>
+<p id="tel" th:text="${session.tel}"></p>
+<p id="role" th:text="${session.role}"></p>
+<hr>
+<p>게시글 등록하기</p>
+<form>
+	<input type="text" name="title"><br>
+	<input type="text" name="content"><br>
+	
+	<button type="button" onclick="regBoard()">등록</button>
+</form>
+
+<script>
+	
+	function regBoard(){
+		
+		const title = document.querySelector('input[name="title"]').value;
+		const content = document.querySelector('input[name="content"]').value;
+		
+		const username = document.getElementById("username").textContent;
+		const password = document.getElementById("password").textContent;
+		const tel = document.getElementById("tel").textContent;
+		const role = document.getElementById("role").textContent;
+		
+		const board = {
+				title: title,
+				content: content,
+				username: username
+		};
+		
+		const userinfo = {
+				username: username,
+				password: password,
+				tel: tel,
+				role: role
+		};
+		
+		console.log(JSON.stringify(board));
+		
+		$.ajax({
+			url: "http://localhost:9001/Board",
+			method: "POST",
+			headers: {
+				"username" : username,
+				"userinfo": JSON.stringify(userinfo)
+			},
+			contentType: "application/json",
+			data: JSON.stringify(board),
+			success: function(response){
+				console.log("등록완료", response);
+			},
+			error: function(error){
+				console.log("등록실패", error);
+			}
+		});
+	}
+	
+</script>
+</body>
+</html>

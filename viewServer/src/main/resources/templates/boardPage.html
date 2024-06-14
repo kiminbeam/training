@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+</head>
+<body>
+<h1>보드 게시판</h1>
+<hr>
+<div id="board">
+	<ul id="boardList">
+		
+	</ul>
+</div>
+
+<script>
+	$(document).ready(function(){
+		$.ajax({
+			url:"http://localhost:9001/board",
+			method:"GET",
+			success: function(response) {
+				const boardList = $("#boardList");
+				boardList.empty();
+				response.forEach(function(board){
+					const listItem = `
+						<li>
+							<span class="title">제목: ${board.title}</span>
+							<span class="content">콘텐츠: ${board.content}</span>
+							<span class="writer">작성자: ${board.username}</span>
+						</li>
+					`;
+					boardList.append(listItem);
+				});
+			},
+			error: function(error){
+				console.error("Error:", error);
+			}
+		});
+	});
+</script>
+</body>
+</html>

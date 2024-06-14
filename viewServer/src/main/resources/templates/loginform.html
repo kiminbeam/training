@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+</head>
+<body>
+<h1>로그인 페이지</h1>
+<hr>
+<h2>view 서버에서 처리하는 로그인</h2>
+<form th:action="@{/loginNow}" method="post">
+	<input type="text" name="username1"><br>
+	<input type="password" name="password1"><br>
+	
+	<input type="submit" value="로그인">
+</form>
+<hr>
+
+<h2>rest서버에 요청해서 처리하는 로그인</h2>
+<form>
+	<input type="text" name="username" placeholder="input id...."><br>
+	<input type="password" name="password" placeholder="input pw...."><br>
+	
+	<input type="button" onclick="trylogin()" value="로그인요청">
+</form>
+	
+	
+<script>
+	function trylogin(){
+		const username = document.querySelector('input[name="username"]').value;
+		const password = document.querySelector('input[name="password"]').value;
+		
+		console.log(username);
+		console.log(password);
+		
+		const userinfo = {
+				username: username,
+				password: password
+		};
+		
+		console.log(userinfo);
+		
+		$.ajax({
+			url:'http://localhost:9001/login',
+			method: 'POST',
+			headers: {
+				"username": username,
+			},
+			contentType: 'application/json',
+			data: JSON.stringify(userinfo),
+			success: function(response, status, xhr){
+				console.log("success: ", response);
+				const usernameResponse = xhr.getResponseHeader("username");
+				const usertoken = xhr.getResponseHeader("token");
+				
+				console.log(usernameResponse);
+				console.log(usertoken);
+				
+				localStorage.setItem("username", usernameResponse);
+				localStorage.setItem("token", usertoken);
+				
+				window.location.href="/restMainPage";
+			},
+			error: function(xhr,status,error){
+				console.log("error:", error);
+			}
+		});
+	}
+</script>
+</body>
+</html>

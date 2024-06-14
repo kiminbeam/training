@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+</head>
+<body>
+<h1>REST서버에 로그인 요청해서 들어온 메인페이지</h1>
+<hr>
+<p id="username"></p>
+<a th:href="@{/boardPage}">보드게시판</a>
+
+<script>
+	$(document).ready(function(){
+		const username = localStorage.getItem("username");
+		
+		document.getElementById("username").textContent = username;
+		
+	});
+	
+</script>
+</body>
+</html>
